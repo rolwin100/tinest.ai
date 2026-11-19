@@ -1,0 +1,51 @@
+# python
+.venv/
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# secrets
+.env
+.env.*
+!.env.example
+deploy/secrets/*.dec
+
+# macOS
+.DS_Store
+
+# node
+node_modules/
+.next/
+
+# ── never commit these: they are large, regenerable, or legally sensitive ──
+# audio corpora (manifests ARE tracked; audio is not)
+research/data/audio/
+research/data/cache/
+*.wav
+*.mp3
+*.flac
+*.opus
+!bench/datasets/**/*.wav
+
+# model weights & checkpoints
+*.onnx
+*.safetensors
+*.ckpt
+*.pt
+*.bin
+models/
+checkpoints/
+
+# call recordings — consent-scoped, never in git
+recordings/
+
+# generated audio from `just say`
+out.wav
+
+# node_modules and build output for apps/studio
+node_modules/
+apps/studio/dist/
+apps/studio/.tanstack/
+apps/studio/.nitro/

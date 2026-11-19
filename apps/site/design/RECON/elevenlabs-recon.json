@@ -1,0 +1,27 @@
+{
+  "url": "https://elevenlabs.io/",
+  "capturedAt": "2026-09-11",
+  "method": "computed-style sampling over visible DOM via Claude in Chrome (the skill's recon-site.mjs needs network the session shell does not have)",
+  "viewport": [1728, 962],
+  "body": { "background": "rgb(253, 252, 252)", "color": "rgb(0, 0, 0)", "fontFamily": "Inter", "fontSize": "18px" },
+  "fonts": ["Waldenburg", "WaldenburgFH", "Inter", "Geist Mono", "JetBrains Mono"],
+  "typeScale": [
+    { "size": "48px", "weight": 300, "lineHeight": "52px", "tracking": "-0.96px", "family": "Waldenburg", "count": 2 },
+    { "size": "36px", "weight": 300, "lineHeight": "42px", "tracking": "normal", "family": "Waldenburg", "count": 8 },
+    { "size": "32px", "weight": 300, "lineHeight": "36px", "tracking": "normal", "family": "Waldenburg", "count": 1 },
+    { "size": "20px", "weight": 400, "lineHeight": "27px", "tracking": "normal", "family": "Inter", "count": 3 },
+    { "size": "18px", "weight": 400, "lineHeight": "28.8px", "tracking": "normal", "family": "Inter", "count": 24 },
+    { "size": "16px", "weight": 400, "lineHeight": "24px", "tracking": "0.16px", "family": "Inter", "count": 42 },
+    { "size": "15px", "weight": 400, "lineHeight": "22px", "tracking": "0.15px", "family": "Inter", "count": 49 },
+    { "size": "14px", "weight": 400, "lineHeight": "21px", "tracking": "0.14px", "family": "Inter", "count": 30 }
+  ],
+  "surfaces": ["rgb(255, 255, 255)", "rgb(253, 252, 252)", "rgb(245, 243, 241)", "rgb(235, 232, 228)", "rgba(0, 0, 0, 0.05)", "rgba(0, 0, 0, 0.075)"],
+  "foregrounds": ["rgb(0, 0, 0)", "rgb(68, 64, 59)", "rgb(119, 113, 105)", "rgb(165, 159, 151)"],
+  "radii": [["9999px", 167], ["4px", 121], ["20px", 39], ["24px", 37], ["14px", 13], ["16px", 8]],
+  "borders": [["1px rgb(229, 229, 229)", 11], ["0.5px rgba(0, 0, 0, 0.075)", 2]],
+  "maxContentWidth": "1144px",
+  "motion": { "easings": [["cubic-bezier(0.4, 0, 0.2, 1)", 264], ["ease", 8]], "durations": [["0.15s", 172], ["0.3s", 65], ["0.2s", 26], ["0.36s", 7], ["0.5s", 2]] },
+  "primaryCta": { "background": "rgb(0, 0, 0)", "color": "rgb(255, 255, 255)", "borderRadius": "9999px", "padding": "0px 16px", "fontSize": "15px", "fontWeight": 400 },
+  "composition": "asymmetric hero — headline left at ~48px/300, supporting paragraph right-of-centre; pill CTAs below-left; large product demo card on a recessed warm panel directly under the fold",
+  "counts": { "canvas": 0 }
+}

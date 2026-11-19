@@ -1,0 +1,371 @@
+{
+  "meta": {
+    "name": "gotiny.ai",
+    "description": "Design DNA for the gotiny.ai marketing site, distilled from the shared visual language of elevenlabs.io and fish.audio. Visual-reproduction mode per references/design-dna.md: style is inherited, nothing is copied — no markup, CSS, assets, wordmarks or copy from either site.",
+    "source_references": "elevenlabs.io (2026-09-11), fish.audio (2026-09-11) — see RECON/*.json for the measurements behind every number here",
+    "created_at": "2026-09-11"
+  },
+  "design_system": {
+    "color": {
+      "palette_type": "monochromatic",
+      "primary": {
+        "hex": "#0A0A0B",
+        "role": "near-black — body text and the primary button fill. Both references use near-black on warm off-white, never a coloured primary"
+      },
+      "secondary": {
+        "hex": "#F5F2EE",
+        "role": "warm recessed panel that the demo card sits on (11L #F5F3F1, fish #F4EEEB)"
+      },
+      "accent": {
+        "hex": "#0089A8",
+        "role": "used sparingly — links, active state, focus ring. fish.audio's teal; 11L uses no chromatic accent at all, so accent area stays under ~2% of the page"
+      },
+      "neutral": {
+        "scale": "warm gray, hue held near 60-70 in oklch: #FDFCFC → #F5F2EE → #EBE8E4 → #A59F97 → #776F6A → #44403B → #0A0A0B",
+        "usage": "the entire surface and text ramp; separation is by background tone, not by shadow"
+      },
+      "semantic": {
+        "success": "#0F8A5F",
+        "warning": "#B87503",
+        "error": "#C4443A",
+        "info": "#0089A8"
+      },
+      "surface": {
+        "background": "#FDFCFA",
+        "card": "#FFFFFF",
+        "elevated": "#FFFFFF over #F5F2EE"
+      },
+      "contrast_strategy": "dark-on-light dominant — near-black text on warm off-white, one near-black inverted block for the closing CTA"
+    },
+    "typography": {
+      "type_scale": {
+        "display": {
+          "size": "clamp(2.75rem, 5.5vw, 4rem)",
+          "weight": "300",
+          "line_height": "1.06",
+          "tracking": "-0.02em"
+        },
+        "heading_1": {
+          "size": "3rem",
+          "weight": "300",
+          "line_height": "1.08",
+          "tracking": "-0.02em"
+        },
+        "heading_2": {
+          "size": "2.25rem",
+          "weight": "300",
+          "line_height": "1.17",
+          "tracking": "-0.01em"
+        },
+        "heading_3": {
+          "size": "1.25rem",
+          "weight": "500",
+          "line_height": "1.35",
+          "tracking": "0"
+        },
+        "body": {
+          "size": "1rem",
+          "weight": "400",
+          "line_height": "1.5",
+          "tracking": "0.01em"
+        },
+        "body_small": {
+          "size": "0.9375rem",
+          "weight": "400",
+          "line_height": "1.47",
+          "tracking": "0.01em"
+        },
+        "caption": {
+          "size": "0.875rem",
+          "weight": "400",
+          "line_height": "1.5",
+          "tracking": "0.01em"
+        },
+        "overline": {
+          "size": "0.75rem",
+          "weight": "500",
+          "line_height": "1.3",
+          "tracking": "0.08em"
+        }
+      },
+      "font_families": {
+        "heading": "Inter Variable at weight 300 (both references pay for a bespoke display face — Waldenburg, Onest. Inter Light is the closest honest stand-in until gotiny licenses one)",
+        "body": "Inter Variable",
+        "mono": "ui-monospace / Geist Mono — both references use a mono for code and IDs"
+      },
+      "font_style_notes": "The signature both sites share and most imitations miss: display type is LIGHT (300-400), never bold, and body text carries slightly POSITIVE tracking (+0.01em at 14-16px) while only display goes negative (-0.02em). Line-height is generous: 1.47-1.6 on body, 1.06-1.17 on display."
+    },
+    "spacing": {
+      "base_unit": "4px",
+      "scale": "4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 / 128",
+      "content_density": "spacious",
+      "section_rhythm": "96-128px vertical between major sections; 20-24px inside cards; hero runs ~80px above the fold content and ~112px below"
+    },
+    "layout": {
+      "grid_system": "single centred container, 12-col mental model, no visible grid",
+      "max_content_width": "1152px (11L measured 1144px, fish 1172px — 1152 sits between and is a clean 72rem)",
+      "columns": "hero is 2-col asymmetric (headline ~55%, supporting paragraph ~40% offset right); feature grids 2-col and 4-col",
+      "gutter": "20px page gutter at mobile, 24px+ desktop",
+      "breakpoints": "640 / 768 / 1024 / 1280",
+      "alignment_tendency": "asymmetric — BOTH references left-align the hero headline and float the paragraph right rather than centring. This is the single biggest structural tell of the genre."
+    },
+    "shape": {
+      "border_radius": {
+        "small": "6px",
+        "medium": "12px",
+        "large": "24px",
+        "pill": "9999px"
+      },
+      "border_usage": "subtle 1px — hairline warm gray (#E5E2DE), used constantly for separation instead of shadow",
+      "divider_style": "1px hairline at the same warm gray; full-bleed between sections"
+    },
+    "elevation": {
+      "shadow_style": "none to soft diffused",
+      "levels": {
+        "low": "none — use a 1px border",
+        "medium": "0 1px 2px rgb(0 0 0 / 0.04)",
+        "high": "0 24px 48px -24px rgb(0 0 0 / 0.12) reserved for the hero demo card only"
+      },
+      "depth_cues": "colour intensity and overlapping layers — a card is white on a warm panel, not a floating box"
+    },
+    "iconography": {
+      "style": "line, geometric, rounded caps",
+      "stroke_weight": "1.5px at 20-24px",
+      "size_scale": "16 / 20 / 24",
+      "preferred_set": "hand-drawn inline SVG; no icon dependency"
+    },
+    "motion": {
+      "easing": "cubic-bezier(0.4, 0, 0.2, 1) for state changes (both sites' dominant curve); cubic-bezier(0.22, 1, 0.36, 1) for entrances (fish.audio's)",
+      "duration_scale": {
+        "micro": "150ms",
+        "normal": "300ms",
+        "macro": "500ms"
+      },
+      "entrance_pattern": "short fade + 12px rise, staggered ~60ms down the hero",
+      "exit_pattern": "fade only",
+      "philosophy": "minimal functional"
+    },
+    "components": {
+      "button_style": "PILL (9999px) — 167 occurrences on 11L, 54 on fish. Primary is near-black fill, white text, 15-16px at weight 400 (NOT semibold), ~16px horizontal padding, ~40px tall. Secondary is a hairline-bordered ghost pill.",
+      "input_style": "12px radius, hairline border, white fill, generous 12-16px padding",
+      "card_style": "white on a warm recessed panel, 12px radius for small cards and 24px for the hero demo card, hairline border, little or no shadow",
+      "navigation_pattern": "sticky, transparent until scrolled then hairline border + blur; logo left, links centre-left, sign-in + pill CTA right",
+      "modal_style": "centred, 16px radius, dim overlay at ~28% near-black",
+      "list_style": "hairline-separated rows, no bullets",
+      "component_notes": "Both sites make the interactive product demo the hero's visual anchor — a large card immediately under the headline, not a screenshot further down the page."
+    }
+  },
+  "design_style": {
+    "aesthetic": {
+      "mood": [
+        "calm",
+        "editorial",
+        "precise",
+        "warm"
+      ],
+      "visual_metaphor": "a quiet studio — paper-warm surfaces, instruments laid out neatly",
+      "era_influence": "post-2023 Swiss-influenced SaaS; warm neutrals rather than the cool grays of 2020",
+      "genre": "developer-facing AI product, consumer-grade finish",
+      "personality_traits": [
+        "understated",
+        "confident",
+        "technical but unintimidating"
+      ],
+      "adjectives": [
+        "warm",
+        "light",
+        "airy",
+        "hairline",
+        "unhurried"
+      ]
+    },
+    "visual_language": {
+      "complexity": "minimal",
+      "ornamentation": "subtle accents",
+      "whitespace_usage": "generous and load-bearing — whitespace does the work shadows would",
+      "visual_weight_distribution": "top-heavy: hero headline and demo card carry the page, everything below is quieter",
+      "focal_strategy": "single hero element — the demo card",
+      "contrast_level": "high on text (near-black on off-white), very low on chrome (hairlines, warm panels)",
+      "texture_usage": "fish.audio uses a painterly gradient behind the demo; 11L uses flat warm panels. Both avoid noise and glass."
+    },
+    "composition": {
+      "hierarchy_method": "scale contrast and spatial isolation, not weight — headings are LIGHTER than body in 11L's case",
+      "balance_type": "asymmetric",
+      "flow_direction": "left-to-right down a single column of full-bleed bands",
+      "grouping_strategy": "full-bleed bands alternating background tone; hairline borders between",
+      "negative_space_role": "primary — it is what makes the type feel expensive"
+    },
+    "imagery": {
+      "photo_treatment": "none — neither site uses photography above the fold",
+      "illustration_style": "abstract gradient orbs (11L) / painterly gradient wash (fish)",
+      "graphic_elements": "waveforms, orbs, soft gradient fields",
+      "pattern_usage": "none",
+      "image_shape": "circles and large soft-cornered rectangles"
+    },
+    "interaction_feel": {
+      "feedback_style": "immediate, quiet — colour and border shifts, no bounce",
+      "hover_behavior": "background tint or border darkening at 150ms; pills lift slightly",
+      "transition_personality": "smooth glide",
+      "loading_style": "inline skeleton / shimmer",
+      "microinteraction_density": "low — reserved for the demo player"
+    },
+    "brand_voice_in_ui": {
+      "tone": "plain, declarative, slightly literary",
+      "formality": "professional but not corporate",
+      "cta_style": "direct imperative",
+      "empty_state_approach": "state plainly what is missing and the one command that fixes it",
+      "error_tone": "factual, no apology theatre"
+    }
+  },
+  "visual_effects": {
+    "overview": {
+      "effect_intensity": "subtle-accent",
+      "performance_tier": "lightweight",
+      "fallback_strategy": "everything degrades to flat colour; prefers-reduced-motion kills all animation",
+      "primary_technology": "CSS only"
+    },
+    "background_effects": {
+      "type": "mesh-gradient",
+      "description": "A soft warm radial wash behind the hero and the closing CTA. fish.audio does this with a painterly raster; we do it with a CSS radial-gradient so nothing is downloaded and it retints per theme.",
+      "technology": "CSS radial-gradient",
+      "params": {
+        "color_palette": "accent at 6-10% over the warm ground",
+        "speed": "static",
+        "density": "single 60% x 60% ellipse at top centre",
+        "opacity": "0.06-0.12",
+        "blend_mode": "normal"
+      }
+    },
+    "particle_systems": {
+      "enabled": false,
+      "type": "",
+      "description": "",
+      "technology": "",
+      "params": {
+        "count": "",
+        "shape": "",
+        "size_range": "",
+        "movement_pattern": "",
+        "color_behavior": "",
+        "interaction": "",
+        "spawn_area": ""
+      }
+    },
+    "3d_elements": {
+      "enabled": false,
+      "type": "",
+      "description": "",
+      "technology": "",
+      "params": {
+        "renderer": "",
+        "lighting": "",
+        "camera": "",
+        "materials": "",
+        "geometry": "",
+        "post_processing": [],
+        "interaction_model": ""
+      }
+    },
+    "shader_effects": {
+      "enabled": false,
+      "type": "",
+      "description": "",
+      "technology": "",
+      "params": {
+        "uniforms": "",
+        "vertex_manipulation": "",
+        "fragment_output": "",
+        "noise_type": "",
+        "distortion": ""
+      }
+    },
+    "scroll_effects": {
+      "parallax": {
+        "enabled": false,
+        "layers": "",
+        "depth_range": "",
+        "speed_curve": ""
+      },
+      "scroll_triggered_animations": {
+        "enabled": true,
+        "trigger_points": "hero only, on load",
+        "animation_type": "fade-up",
+        "scrub_behavior": "none"
+      },
+      "scroll_morphing": {
+        "enabled": false,
+        "description": ""
+      }
+    },
+    "text_effects": {
+      "type": "none",
+      "description": "Neither reference animates its headline. The motion budget goes to the demo player.",
+      "technology": "",
+      "params": {
+        "split_strategy": "",
+        "animation_per_unit": "",
+        "stagger": "",
+        "effect_style": ""
+      }
+    },
+    "cursor_effects": {
+      "enabled": false,
+      "type": "",
+      "description": "",
+      "params": {
+        "shape": "",
+        "size": "",
+        "blend_mode": "",
+        "trail": "",
+        "interaction_zone": ""
+      }
+    },
+    "image_effects": {
+      "type": "",
+      "description": "",
+      "technology": "",
+      "params": {
+        "filter_pipeline": "",
+        "hover_transform": "",
+        "reveal_animation": "",
+        "distortion_type": ""
+      }
+    },
+    "glassmorphism_neumorphism": {
+      "enabled": false,
+      "style": "",
+      "params": {
+        "blur_radius": "",
+        "transparency": "",
+        "border_treatment": "",
+        "shadow_type": "",
+        "light_source_angle": ""
+      }
+    },
+    "canvas_drawings": {
+      "enabled": false,
+      "type": "none",
+      "description": "The waveform is DOM spans, not canvas — 72 elements is cheaper than a render loop and it inherits the theme tokens for free. Neither reference uses canvas on its homepage (measured: 0 canvases on both).",
+      "technology": "",
+      "params": {
+        "draw_method": "",
+        "animation_loop": "",
+        "color_scheme": "",
+        "responsiveness": "",
+        "interaction": ""
+      }
+    },
+    "svg_animations": {
+      "enabled": false,
+      "type": "",
+      "description": "",
+      "params": {
+        "animation_method": "",
+        "path_morphing": "",
+        "stroke_animation": "",
+        "filter_effects": ""
+      }
+    },
+    "composite_notes": "Both references are measurably restrained: zero canvas, no WebGL, no particles, no cursor effects, no parallax. The genre reads premium because of type, warm neutrals and whitespace — not effects. Do not add any."
+  }
+}

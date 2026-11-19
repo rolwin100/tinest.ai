@@ -1,0 +1,55 @@
+# The same front desk, in English. Everything below is config: no code differs
+# between this and receptionist.yaml, which is the whole point of ADR 0003.
+#
+# Switching language changes three things at once, and all three matter:
+#   - Whisper decodes as English instead of forcing Devanagari output
+#   - the LLM is prompted to answer in English
+#   - the TTS voice changes to one that actually speaks English
+# Kokoro's English voices are grade A; its Hindi ones are grade C.
+slug: receptionist-en
+name: Clinic front desk (English)
+language: en-US
+# Kokoro, not Qwen3-TTS (en-warm-01), and deliberately.
+#
+# Qwen is an expressive instruct-tuned model: it performs a delivery rather than
+# reading a line. On a front desk that is a liability, not a feature -- it drawls
+# when told to sound warm, and it renders stray laughter tokens from the LLM as
+# actual laughter. Kokoro is 82M and non-autoregressive: punctuation is the only
+# prosody it has, which is exactly the boring, repeatable behaviour a
+# receptionist needs -- and it is ~340ms a turn against Qwen's 1-3s on a laptop.
+#
+# Switch to en-female-01 (Kokoro) if the latency is not worth it.
+voice_id: en-agent-01
+
+# 0.5 < speed < 2.0. Exact on Kokoro; on Qwen it selects one of five pace
+# phrases appended to the instruct, so 1.15 and 1.2 are the same bucket.
+speed: 1.2
+
+ai_disclosure: "Hi, just so you know, I'm an AI assistant."
+
+greeting: "Thanks for calling the clinic. How can I help?"
+
+prompt: |
+  You are the front desk assistant for a busy neighbourhood clinic.
+
+  Answer in English, one or two short sentences. Never more than two.
+  Hours are 9am-8pm, closed Sunday. Consultation is 500 rupees.
+  To book you need a name, a date and a time: use check_slots, then
+  book_appointment, then read the confirmation number back once.
+  Answer general questions too - the time, the date, small talk - briefly and
+  naturally, then steer back to how you can help. Do not refuse ordinary
+  questions just because they are not about the clinic.
+  Never announce what you are about to do; just answer.
+  Never give medical advice - offer to book a visit instead.
+  If you did not understand, ask them to repeat.
+
+tools:
+  - check_slots
+  - book_appointment
+
+turn:
+  # 0.6 was dead air on every reply. Lower until it starts clipping
+  # people mid-sentence, then back off one notch.
+  stop_secs: 0.1
+  start_secs: 0.2
+  confidence: 0.7

@@ -1,0 +1,43 @@
+# gotiny.ai — uv workspace root (virtual: this root is not itself a package)
+[tool.uv.workspace]
+# Explicit, not globbed. Placeholder directories under packages/ and services/
+# hold only a README until they are real, and a glob would claim them as members
+# and fail the sync. Add a line here the moment a directory gets a pyproject.toml.
+members = [
+    "packages/gotiny-core",
+    "packages/gotiny-providers",
+    "packages/gotiny-audio",
+    "packages/gotiny-agent",
+    "bench",
+    "services/tts",
+    "services/stt",
+    "services/gateway",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.7",
+    "mypy>=1.13",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["gotiny", "conformance"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+namespace_packages = true
+explicit_package_bases = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["bench", "packages"]

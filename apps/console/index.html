@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>gotiny · playground</title>
+<link rel="icon" href="data:,">
+<style>
+  :root{
+    --bg:#0e1416; --panel:#151e20; --line:#243033; --ink:#e6edec; --dim:#8fa09e;
+    --accent:#4fc7bf; --ok:#63bc95; --warn:#dca349; --bad:#e0796a;
+    --mono:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  .wrap{max-width:820px;margin:0 auto;padding:40px 20px 60px}
+  h1{font-size:22px;margin:0 0 2px;letter-spacing:-.01em}
+  .sub{color:var(--dim);font-size:13px;margin:0 0 28px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:20px;margin-bottom:16px}
+  .row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  button{font:600 15px/1 inherit;padding:13px 22px;border-radius:5px;border:1px solid transparent;cursor:pointer}
+  #go{background:var(--accent);color:#06211f}
+  #go:hover{filter:brightness(1.08)}
+  #go[data-live="1"]{background:var(--bad);color:#2a0d08}
+  button:disabled{opacity:.5;cursor:default}
+  .pill{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;
+        padding:5px 10px;border-radius:99px;background:#1d282a;color:var(--dim)}
+  .pill[data-s="connected"]{background:#142b22;color:var(--ok)}
+  .pill[data-s="connecting"],.pill[data-s="checking"]{background:#302413;color:var(--warn)}
+  .pill[data-s="failed"],.pill[data-s="closed"],.pill[data-s="disconnected"]{background:#2e1512;color:var(--bad)}
+  /* Mic meter: the first thing to check when "nothing happens" — it separates
+     a dead microphone from a pipeline that isn't listening. */
+  .meter{flex:1;min-width:160px;height:8px;background:#1d282a;border-radius:99px;overflow:hidden}
+  .meter i{display:block;height:100%;width:0;background:var(--accent);transition:width .06s linear}
+  dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:16px 0 0;font-family:var(--mono);font-size:12px}
+  dt{color:var(--dim)}
+  dd{margin:0;word-break:break-all}
+  #log{font-family:var(--mono);font-size:11.5px;line-height:1.7;max-height:300px;overflow-y:auto;margin:0}
+  #log div{border-bottom:1px solid #1a2426;padding:3px 0;display:flex;gap:10px}
+  #log time{color:var(--dim);flex:none}
+  .t-err{color:var(--bad)} .t-ok{color:var(--ok)} .t-rx{color:var(--accent)}
+  h2{font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin:0 0 12px}
+  .hops{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:1px;background:var(--line);
+        border:1px solid var(--line);border-radius:5px;overflow:hidden}
+  .hop{background:#111a1c;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+  .hop span{font:500 10px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--dim)}
+  .hop b{font:700 19px/1 var(--mono);font-variant-numeric:tabular-nums}
+  .hop b.warn{color:var(--warn)} .hop b.bad{color:var(--bad)} .hop b.ok{color:var(--ok)}
+  .hint{font-size:12.5px;color:var(--dim);margin:12px 0 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>gotiny playground</h1>
+  <p class="sub">Talk to the agent. Everything runs on this machine.</p>
+
+  <div class="panel">
+    <div class="row">
+      <button id="go">Start call</button>
+      <span class="pill" id="state" data-s="idle">idle</span>
+      <div class="meter" title="microphone level"><i id="level"></i></div>
+    </div>
+    <dl>
+      <dt>call</dt><dd id="callid">—</dd>
+      <dt>ice</dt><dd id="ice">—</dd>
+    </dl>
+  </div>
+
+  <div class="panel">
+    <h2>Last turn</h2>
+    <div class="hops">
+      <div class="hop"><span>work per turn</span><b id="h-total">—</b></div>
+      <div class="hop"><span>you spoke for</span><b id="h-spoke">—</b></div>
+      <div class="hop"><span>stt</span><b id="h-stt">—</b></div>
+      <div class="hop"><span>llm</span><b id="h-llm">—</b></div>
+      <div class="hop"><span>tts</span><b id="h-tts">—</b></div>
+    </div>
+    <p class="hint" id="verdict">Speak one short sentence. The biggest number is the problem.</p>
+    <p class="hint">Work per turn is the three hops added up, each timed inside its own service.
+    True voice-to-voice also includes the turn-detector's silence window and the wait for the
+    LLM's first complete sentence &mdash; measured server-side from week 2.</p>
+  </div>
+
+  <div class="panel">
+    <h2>Events</h2>
+    <div id="log"></div>
+  </div>
+</div>
+
+<audio id="remote" autoplay></audio>
+
+<script>
+const $ = id => document.getElementById(id);
+let pc = null, stream = null, audioCtx = null, meterRAF = null;
+
+function log(msg, cls){
+  const row = document.createElement("div");
+  const t = document.createElement("time");
+  t.textContent = new Date().toLocaleTimeString("en-GB", {hour12:false});
+  const s = document.createElement("span");
+  if (cls) s.className = cls;
+  s.textContent = msg;
+  row.append(t, s);
+  $("log").prepend(row);
+}
+const setState = s => { $("state").textContent = s; $("state").dataset.s = s; };
+
+// The gateway has no trickle-ICE endpoint: the whole offer, candidates included,
+// arrives in one POST. So wait for gathering to finish before sending, or the
+// SDP carries no candidates and the connection never establishes.
+function iceComplete(pc){
+  if (pc.iceGatheringState === "complete") return Promise.resolve();
+  return new Promise(resolve => {
+    const check = () => {
+      $("ice").textContent = pc.iceGatheringState;
+      if (pc.iceGatheringState === "complete"){
+        pc.removeEventListener("icegatheringstatechange", check);
+        resolve();
+      }
+    };
+    pc.addEventListener("icegatheringstatechange", check);
+    setTimeout(resolve, 4000);  // some networks never say "complete"
+  });
+}
+
+function startMeter(stream){
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const src = audioCtx.createMediaStreamSource(stream);
+  const analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 512;
+  src.connect(analyser);
+  const buf = new Uint8Array(analyser.frequencyBinCount);
+  const tick = () => {
+    analyser.getByteTimeDomainData(buf);
+    let peak = 0;
+    for (const v of buf) peak = Math.max(peak, Math.abs(v - 128));
+    $("level").style.width = Math.min(100, (peak / 128) * 260) + "%";
+    meterRAF = requestAnimationFrame(tick);
+  };
+  tick();
+}
+
+// ── turn timing ──
+// Pipecat emits per-processor TTFB on the data channel every turn; the raw
+// numbers were already in the log, just unreadable. The hop with the biggest
+// number is the one to fix -- everything else is noise until it is fixed.
+//
+// What is NOT measured here: true voice-to-voice. An earlier version timed the
+// gap between data-channel *events* and reported 316 ms for a turn whose TTS
+// hop alone was 393 ms -- impossible. Message delivery over the channel is
+// batched and reordered, so browser-side arrival times say nothing about when
+// things happened in the pipeline. The honest number is the sum of the hops,
+// which are timed inside each service. Real voice-to-voice needs a server-side
+// span, and that arrives in week 2 with the `turn` table.
+const hops = {};
+let spokeAt = 0, stoppedAt = 0;
+
+function ms(v){ return v >= 10 ? Math.round(v) + " ms" : v.toFixed(0) + " ms"; }
+function paint(id, value_ms, warn, bad){
+  const el = $(id);
+  el.textContent = ms(value_ms);
+  el.className = value_ms >= bad ? "bad" : value_ms >= warn ? "warn" : "ok";
+}
+
+function onEvent(m){
+  const now = performance.now();
+  // Speech duration is the one browser-side interval worth keeping: it spans
+  // seconds, so delivery jitter of a few tens of ms does not distort it, and it
+  // is how you catch the turn detector holding the mic open.
+  if (m.type === "user-started-speaking" && !spokeAt) spokeAt = now;
+  if (m.type === "user-stopped-speaking" && spokeAt) {
+    paint("h-spoke", now - spokeAt, 8000, 15000);
+    spokeAt = 0;
+  }
+  if (m.type === "metrics" && m.data && Array.isArray(m.data.ttfb)) {
+    for (const e of m.data.ttfb) {
+      const v = e.value * 1000;              // pipecat reports seconds
+      if (!v) continue;
+      if (e.processor.includes("STT")) { hops.stt = v; paint("h-stt", v, 1500, 4000); }
+      if (e.processor.includes("LLM")) { hops.llm = v; paint("h-llm", v, 1000, 3000); }
+      if (e.processor.includes("TTS")) { hops.tts = v; paint("h-tts", v, 800, 2000); }
+    }
+    const total = (hops.stt || 0) + (hops.llm || 0) + (hops.tts || 0);
+    if (total) paint("h-total", total, 1200, 2500);
+    verdict();
+  }
+}
+
+function verdict(){
+  const entries = Object.entries(hops).filter(([,v]) => v > 0);
+  if (!entries.length) return;
+  const [name, value] = entries.sort((a,b) => b[1] - a[1])[0];
+  const why = {
+    stt: "a large STT number usually means the turn detector held the mic open, not that Whisper is slow - check how long 'you spoke for' says",
+    llm: "time to first token. Check `ollama ps` shows Metal, and shorten the system prompt",
+    tts: "synthesis of the first sentence. Kokoro competes for the same cores as Whisper and the LLM",
+  }[name];
+  $("verdict").textContent = `slowest hop: ${name} at ${ms(value)} - ${why}`;
+}
+
+async function start(){
+  $("go").disabled = true;
+  setState("connecting");
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      audio: {echoCancellation:true, noiseSuppression:true, autoGainControl:true}
+    });
+    log("microphone open", "t-ok");
+    startMeter(stream);
+
+    pc = new RTCPeerConnection({iceServers:[{urls:"stun:stun.l.google.com:19302"}]});
+    // addTrack creates a sendrecv transceiver, which is both directions:
+    // adding a second recvonly one produced a duplicate m-line and fired
+    // ontrack twice.
+    stream.getTracks().forEach(t => pc.addTrack(t, stream));
+
+    pc.ontrack = e => { $("remote").srcObject = e.streams[0]; log("agent audio track", "t-ok"); };
+    pc.onconnectionstatechange = () => {
+      setState(pc.connectionState);
+      log("connection: " + pc.connectionState,
+          pc.connectionState === "connected" ? "t-ok"
+          : ["failed","closed","disconnected"].includes(pc.connectionState) ? "t-err" : "");
+      if (["failed","closed","disconnected"].includes(pc.connectionState)) cleanup();
+    };
+    pc.oniceconnectionstatechange = () => { $("ice").textContent = pc.iceConnectionState; };
+
+    // The server listens for whatever channel we create; the label is ours.
+    // Pipecat pushes RTVI events down it — transcripts, bot speaking, tool calls.
+    const dc = pc.createDataChannel("gotiny");
+    dc.onopen = () => log("data channel open", "t-ok");
+    dc.onmessage = e => {
+      let text = e.data;
+      try {
+        const m = JSON.parse(e.data);
+        text = m.type ? m.type + (m.data ? " · " + JSON.stringify(m.data) : "") : e.data;
+        onEvent(m);
+      } catch {}
+      log(text, "t-rx");
+    };
+
+    await pc.setLocalDescription(await pc.createOffer());
+    await iceComplete(pc);
+    log("offering…");
+
+    const res = await fetch("/offer", {
+      method:"POST",
+      headers:{"content-type":"application/json"},
+      body: JSON.stringify({sdp: pc.localDescription.sdp, type: pc.localDescription.type})
+    });
+    if (!res.ok){
+      const detail = await res.text();
+      throw new Error(res.status === 503
+        ? "gateway busy or draining — " + detail
+        : "gateway said " + res.status + " — " + detail);
+    }
+    const answer = await res.json();
+    $("callid").textContent = answer.call_id;
+    await pc.setRemoteDescription({sdp: answer.sdp, type: answer.type});
+    log("answered, negotiating…");
+
+    $("go").textContent = "Hang up";
+    $("go").dataset.live = "1";
+  } catch (err) {
+    log(String(err.message || err), "t-err");
+    setState("failed");
+    cleanup();
+  } finally {
+    $("go").disabled = false;
+  }
+}
+
+function cleanup(){
+  if (meterRAF) cancelAnimationFrame(meterRAF), meterRAF = null;
+  $("level").style.width = "0";
+  if (audioCtx) audioCtx.close().catch(()=>{}), audioCtx = null;
+  if (stream) stream.getTracks().forEach(t => t.stop()), stream = null;
+  if (pc) pc.close(), pc = null;
+  spokeAt = stoppedAt = 0;
+  $("go").textContent = "Start call";
+  delete $("go").dataset.live;
+}
+
+$("go").onclick = () => {
+  if ($("go").dataset.live){ log("hung up"); cleanup(); setState("idle"); }
+  else start();
+};
+</script>
+</body>
+</html>

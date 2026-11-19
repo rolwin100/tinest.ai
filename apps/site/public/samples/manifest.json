@@ -1,0 +1,131 @@
+{
+  "generatedAt": "2026-09-20T18:54:17.363Z",
+  "clips": [
+    {
+      "id": "en-female-01:0",
+      "voiceId": "en-female-01",
+      "promptIndex": 0,
+      "src": "/samples/en-female-01-0.wav",
+      "durationMs": 3456
+    },
+    {
+      "id": "en-female-01:1",
+      "voiceId": "en-female-01",
+      "promptIndex": 1,
+      "src": "/samples/en-female-01-1.wav",
+      "durationMs": 3584
+    },
+    {
+      "id": "en-female-01:2",
+      "voiceId": "en-female-01",
+      "promptIndex": 2,
+      "src": "/samples/en-female-01-2.wav",
+      "durationMs": 4416
+    },
+    {
+      "id": "en-male-01:0",
+      "voiceId": "en-male-01",
+      "promptIndex": 0,
+      "src": "/samples/en-male-01-0.wav",
+      "durationMs": 4160
+    },
+    {
+      "id": "en-male-01:1",
+      "voiceId": "en-male-01",
+      "promptIndex": 1,
+      "src": "/samples/en-male-01-1.wav",
+      "durationMs": 4139
+    },
+    {
+      "id": "en-male-01:2",
+      "voiceId": "en-male-01",
+      "promptIndex": 2,
+      "src": "/samples/en-male-01-2.wav",
+      "durationMs": 5077
+    },
+    {
+      "id": "en-agent-01:0",
+      "voiceId": "en-agent-01",
+      "promptIndex": 0,
+      "src": "/samples/en-agent-01-0.wav",
+      "durationMs": 5600
+    },
+    {
+      "id": "en-agent-01:1",
+      "voiceId": "en-agent-01",
+      "promptIndex": 1,
+      "src": "/samples/en-agent-01-1.wav",
+      "durationMs": 4560
+    },
+    {
+      "id": "en-agent-01:2",
+      "voiceId": "en-agent-01",
+      "promptIndex": 2,
+      "src": "/samples/en-agent-01-2.wav",
+      "durationMs": 5840
+    },
+    {
+      "id": "en-agent-02:0",
+      "voiceId": "en-agent-02",
+      "promptIndex": 0,
+      "src": "/samples/en-agent-02-0.wav",
+      "durationMs": 4000
+    },
+    {
+      "id": "en-agent-02:1",
+      "voiceId": "en-agent-02",
+      "promptIndex": 1,
+      "src": "/samples/en-agent-02-1.wav",
+      "durationMs": 4160
+    },
+    {
+      "id": "en-agent-02:2",
+      "voiceId": "en-agent-02",
+      "promptIndex": 2,
+      "src": "/samples/en-agent-02-2.wav",
+      "durationMs": 5120
+    },
+    {
+      "id": "en-brisk-01:0",
+      "voiceId": "en-brisk-01",
+      "promptIndex": 0,
+      "src": "/samples/en-brisk-01-0.wav",
+      "durationMs": 4480
+    },
+    {
+      "id": "en-brisk-01:1",
+      "voiceId": "en-brisk-01",
+      "promptIndex": 1,
+      "src": "/samples/en-brisk-01-1.wav",
+      "durationMs": 4400
+    },
+    {
+      "id": "en-brisk-01:2",
+      "voiceId": "en-brisk-01",
+      "promptIndex": 2,
+      "src": "/samples/en-brisk-01-2.wav",
+      "durationMs": 4720
+    },
+    {
+      "id": "hi-female-01:0",
+      "voiceId": "hi-female-01",
+      "promptIndex": 0,
+      "src": "/samples/hi-female-01-0.wav",
+      "durationMs": 3733
+    },
+    {
+      "id": "hi-female-01:1",
+      "voiceId": "hi-female-01",
+      "promptIndex": 1,
+      "src": "/samples/hi-female-01-1.wav",
+      "durationMs": 2752
+    },
+    {
+      "id": "hi-female-01:2",
+      "voiceId": "hi-female-01",
+      "promptIndex": 2,
+      "src": "/samples/hi-female-01-2.wav",
+      "durationMs": 3477
+    }
+  ]
+}

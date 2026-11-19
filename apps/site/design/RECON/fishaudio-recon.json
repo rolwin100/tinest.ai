@@ -1,0 +1,26 @@
+{
+  "url": "https://fish.audio/",
+  "capturedAt": "2026-09-11",
+  "method": "computed-style sampling over visible DOM via Claude in Chrome",
+  "viewport": [1512, 792],
+  "body": { "background": "rgb(250, 248, 245)", "color": "rgb(9, 9, 11)", "fontFamily": "Onest Variable", "fontSize": "16px" },
+  "fonts": ["Onest Variable", "Geist Mono Variable", "JetBrains Mono Variable", "Lora", "Lato"],
+  "typeScale": [
+    { "size": "48px", "weight": 400, "lineHeight": "52px", "tracking": "normal", "family": "Onest", "count": 1 },
+    { "size": "48px", "weight": 400, "lineHeight": "64px", "tracking": "normal", "family": "Onest", "count": 1 },
+    { "size": "36px", "weight": 400, "lineHeight": "42px", "tracking": "normal", "family": "Onest", "count": 11 },
+    { "size": "26px", "weight": 400, "lineHeight": "42px", "tracking": "normal", "family": "Onest", "count": 3 },
+    { "size": "18px", "weight": 600, "lineHeight": "26px", "tracking": "0.18px", "family": "Onest", "count": 19 },
+    { "size": "16px", "weight": 600, "lineHeight": "24px", "tracking": "normal", "family": "Onest", "count": 24 }
+  ],
+  "surfaces": ["rgb(250, 248, 245)", "rgb(255, 255, 255)", "rgb(244, 238, 235)", "rgb(29, 29, 28)", "rgba(0, 0, 0, 0.04)", "rgba(15, 14, 13, 0.28)"],
+  "foregrounds": ["rgb(9, 9, 11)", "rgb(15, 14, 13)", "rgb(118, 111, 106)"],
+  "accent": "rgb(0, 137, 168)",
+  "radii": [["12px", 63], ["9999px", 54], ["24px", 29], ["6px", 22], ["16px", 8]],
+  "borders": [["1px rgba(0, 137, 168, 0.1)", 14], ["1px rgb(255, 255, 255)", 12]],
+  "maxContentWidth": "1172px",
+  "motion": { "easings": [["cubic-bezier(0.22, 1, 0.36, 1)", 63], ["cubic-bezier(0.4, 0, 0.2, 1)", 59]], "durations": [["0.32s / 0.18s", 63], ["0.15s", 36], ["0.3s", 10], ["0.1s", 9]] },
+  "primaryCta": { "background": "rgb(255, 255, 255)", "color": "rgb(9, 9, 11)", "borderRadius": "9999px", "padding": "0px 2px 0px 16px", "fontSize": "16px", "fontWeight": 400 },
+  "composition": "asymmetric hero — headline left at 36-48px/400, supporting paragraph right at ~50% down; pill badge above headline; full-width demo card on a painterly gradient ground immediately below, with a white inset panel split voice-list / text-editor",
+  "counts": { "canvas": 0 }
+}

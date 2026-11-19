@@ -1,0 +1,22 @@
+[project]
+name = "gotiny-agent"
+version = "0.1.0"
+description = "One call, start to finish: the Pipecat pipeline and the persona that drives it."
+requires-python = ">=3.12"
+dependencies = [
+    "gotiny-core",
+    "gotiny-providers",
+    "pipecat-ai[webrtc,silero,openai]>=1.7.0",
+    "pyyaml>=6.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gotiny"]
+
+[tool.uv.sources]
+gotiny-core = { workspace = true }
+gotiny-providers = { workspace = true }

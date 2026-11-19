@@ -1,0 +1,41 @@
+{
+  "_comment": "Shared by the site and scripts/render-samples.mjs. Add a voice here and the render script picks it up automatically. voice_id values must exist in services/tts/src/gotiny/tts/config/voices.yaml. Each prompt has a label (what the line is FOR — shown on the chip) and the text itself.",
+  "prompts": {
+    "en-US": [
+      {
+        "label": "Support call",
+        "text": "Hi — thanks for calling. I can check that order for you right now."
+      },
+      {
+        "label": "Brand read",
+        "text": "Studio-quality speech that sounds like it belongs to your brand."
+      },
+      {
+        "label": "Appointment",
+        "text": "Your appointment is confirmed for Tuesday at four. Anything else I can help with?"
+      }
+    ],
+    "hi": [
+      {
+        "label": "Support call",
+        "text": "नमस्ते! आपका ऑर्डर मैं अभी चेक करती हूँ।"
+      },
+      {
+        "label": "Brand read",
+        "text": "हर ब्रांड को एक असली आवाज़ चाहिए।"
+      },
+      {
+        "label": "Appointment",
+        "text": "आपका अपॉइंटमेंट मंगलवार चार बजे पक्का है।"
+      }
+    ]
+  },
+  "voices": [
+    { "id": "en-female-01", "name": "Aria", "style": "Warm · Narration", "lang": "English (US)", "language": "en-US" },
+    { "id": "en-male-01", "name": "Michael", "style": "Clear · Explainer", "lang": "English (US)", "language": "en-US" },
+    { "id": "en-agent-01", "name": "Vivian", "style": "Composed · Support", "lang": "English (US)", "language": "en-US" },
+    { "id": "en-agent-02", "name": "Aiden", "style": "Crisp · Efficient", "lang": "English (US)", "language": "en-US" },
+    { "id": "en-brisk-01", "name": "Nova", "style": "Brisk · Product", "lang": "English (US)", "language": "en-US" },
+    { "id": "hi-female-01", "name": "Meera", "style": "Natural · Conversational", "lang": "Hindi", "language": "hi" }
+  ]
+}

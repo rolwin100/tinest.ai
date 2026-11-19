@@ -1,0 +1,146 @@
+# Logical voice_id -> backend voice. The indirection is the point: when our own
+# weights take over Hindi in Phase 2, `hi-female-01` keeps working, the console
+# does not change, and no caller-facing config is touched.
+#
+# `grade` is recorded honestly so nobody mistakes a placeholder for a product
+# voice. Kokoro's Hindi voices are C-grade on 10-100 minutes of data each.
+voices:
+  hi-female-01:
+    backend: kokoro-onnx@1.0
+    voice: hf_alpha
+    language: hi
+    grade: C
+    note: placeholder until IndicF5 (week 3)
+  hi-female-02:
+    backend: kokoro-onnx@1.0
+    voice: hf_beta
+    language: hi
+    grade: C
+  hi-male-01:
+    backend: kokoro-onnx@1.0
+    voice: hm_omega
+    language: hi
+    grade: C
+  en-female-01:
+    backend: kokoro-onnx@1.0
+    voice: af_heart
+    language: en-US
+    grade: A
+  en-male-01:
+    backend: kokoro-onnx@1.0
+    voice: am_michael
+    language: en-US
+    grade: A
+
+  # Qwen3-TTS. `voice` is "Speaker|style instruction" -- the part after the pipe
+  # is natural-language delivery control, which is the whole reason to pay this
+  # model's latency over Kokoro's. English only: it has no Indic languages.
+  #
+  # CONFIRMED 20 Sept 2026, on-call: on qwen3-tts-600m@1.0 (the 0.6B default
+  # model), the instruct half of every line below is discarded before
+  # generation -- qwen_tts hard-disables instruct for this checkpoint size.
+  # en-agent-01 laughed despite its explicit "do not laugh" for exactly this
+  # reason. See _model_supports_instruct / the load-time warning in
+  # backends/qwen3_tts.py. Every instruct string here is provisional until
+  # this runs on the 1.7B CustomVoice checkpoint (GOTINY_QWEN_TTS_MODEL),
+  # which is the one that actually reads it.
+  en-warm-01:
+    backend: qwen3-tts-600m@1.0
+    voice: Vivian|professional should be a bit serious and not too friendly 
+    language: en-US
+    grade: B
+    # "unhurried" lived here once and the model obeyed it, literally and
+    # slowly. instruct is delivery control, not flavour text: keep pace words
+    # out of it, that is what the persona's `speed` is for.
+    note: slower than Kokoro - measure with `just say` before using on calls
+  en-brisk-01:
+    backend: qwen3-tts-600m@1.0
+    voice: Aiden|brisk and efficient, but never curt
+    language: en-US
+    grade: B
+
+  # Contact-centre delivery, on Qwen3-TTS. Read the instruct carefully before
+  # editing: every adjective in it is obeyed. Two lessons are baked in here.
+  #
+  #   "unhurried" -> the model drawled. Pace belongs to the persona's `speed`,
+  #                  which this backend turns into a phrase and appends.
+  #   "glad you called" -> gladness is rendered as smile-voice and light
+  #                  laughter. Courtesy is a manner; happiness is an emotion.
+  #                  Ask for the manner.
+  #
+  # The explicit negatives matter: an instruct-tuned model will otherwise fill
+  # pauses with breath and filler, which reads as hesitant on a support line.
+  en-agent-01:
+    backend: qwen3-tts-600m@1.0
+    voice: >-
+      Vivian|a professional contact centre agent. Clear, confident and
+      articulate. Efficient without sounding curt, never chatty. Do not be too slow it should not sound like your speech is lagging. Do not laugh, chuckle,
+      sigh, or add filler sounds.
+    language: en-US
+    grade: B
+    note: expressive but slow - 1-3s per turn on a laptop vs Kokoro's ~340ms
+  en-agent-02:
+    backend: qwen3-tts-600m@1.0
+    voice: >-
+      Aiden|a professional contact centre agent. Crisp, confident and
+      articulate. Efficient without sounding curt. Do not laugh, chuckle, sigh,
+      or add filler sounds.
+    language: en-US
+    grade: B
+    note: the other English speaker - audition both, they differ more than the text does
+  en-agent-03:
+    backend: qwen3-tts-600m@1.0
+    voice: >-
+      Ono_anna|a professional contact centre agent. Clear, even-toned and
+      articulate. Courteous and composed, never chatty. Do not laugh, chuckle,
+      sigh, or add filler sounds.
+    language: en-US
+    grade: B
+    note: the other English speaker - audition both, they differ more than the text does
+
+  # Unaudited candidates, discovered 20 Sept 2026 by querying the checkpoint's
+  # own roster directly (see the comment above _SPEAKERS in qwen3_tts.py --
+  # the full list is aiden, dylan, eric, ono_anna, ryan, serena, sohee,
+  # uncle_fu, vivian; the four above already have grades, these six don't).
+  # No instruct on any of them: it's a no-op on qwen3-tts-600m@1.0 regardless
+  # of what's written here (see the instruct-drop note at the top of
+  # qwen3_tts.py). `voice_id` uses "candidate" on purpose so none of these get
+  # mistaken for a graded, ready-to-use product voice by a caller or a demo
+  # script skimming this file -- audition with `just say`, then either give it
+  # a real en-* id and a grade, or delete the entry if it's not usable.
+  en-candidate-dylan:
+    backend: qwen3-tts-600m@1.0
+    voice: Dylan
+    language: en-US
+    grade: null
+    note: unaudited
+  en-candidate-eric:
+    backend: qwen3-tts-600m@1.0
+    voice: Eric
+    language: en-US
+    grade: null
+    note: unaudited
+  en-candidate-serena:
+    backend: qwen3-tts-600m@1.0
+    voice: Serena
+    language: en-US
+    grade: null
+    note: unaudited
+  en-candidate-sohee:
+    backend: qwen3-tts-600m@1.0
+    voice: Sohee
+    language: en-US
+    grade: null
+    note: unaudited
+  en-candidate-uncle-fu:
+    backend: qwen3-tts-600m@1.0
+    voice: Uncle_fu
+    language: en-US
+    grade: null
+    note: unaudited
+  en-candidate-vivian:
+    backend: qwen3-tts-600m@1.0
+    voice: Vivian
+    language: en-US
+    grade: null
+    note: unaudited

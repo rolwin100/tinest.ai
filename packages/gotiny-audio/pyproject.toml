@@ -1,0 +1,16 @@
+[project]
+name = "gotiny-audio"
+version = "0.1.0"
+description = "PCM helpers shared by the media plane, the workers and research."
+requires-python = ">=3.12"
+dependencies = ["gotiny-core", "numpy>=2.0", "soxr>=0.5"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gotiny"]
+
+[tool.uv.sources]
+gotiny-core = { workspace = true }
